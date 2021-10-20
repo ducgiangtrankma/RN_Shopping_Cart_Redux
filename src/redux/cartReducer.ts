@@ -1,9 +1,17 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {Product} from '../screens';
 export interface CartSate {
-  items: {id: number; name: string; price: number}[];
+  items: {
+    id: number;
+    name: string;
+    price: number;
+    like: boolean;
+    img: any;
+  }[];
   total: number;
   count: number;
 }
+
 const initialState: CartSate = {
   items: [],
   total: 0,
@@ -13,11 +21,8 @@ const slice = createSlice({
   name: 'CART_STATE',
   initialState: initialState,
   reducers: {
-    ADD_TO_CART: (
-      state,
-      {payload}: PayloadAction<{id: number; name: string; price: number}>,
-    ) => {
-      console.log('Add to cart', payload);
+    ADD_TO_CART: (state, {payload}: PayloadAction<Product>) => {
+      state.items = state.items.concat(payload);
     },
   },
 });

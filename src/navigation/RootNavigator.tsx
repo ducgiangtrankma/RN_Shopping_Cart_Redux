@@ -10,12 +10,12 @@ export const RootNavigation = () => {
       <RootStack.Screen
         name={APP_SCREEN.HOME}
         component={Home}
-        // options={{headerShown: false}}
+        options={{headerShown: false}}
       />
       <RootStack.Screen
         name={APP_SCREEN.CART}
         component={Cart}
-        // options={{headerShown: false}}
+        options={{headerShown: false}}
       />
     </RootStack.Navigator>
   );
