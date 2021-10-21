@@ -12,10 +12,27 @@ import {
 import {images} from '../assets';
 import {useSelector} from '../redux/common';
 import {COLORS} from '../constant';
+import {useDispatch} from 'react-redux';
+import {incrementQuantity, decrementQuantity, Item} from '../redux/cartReducer';
 interface CartProps {}
+const calculatorPrice = (arr: Item[]) => {
+  let sum = 0;
+  arr.map(e => {
+    sum = sum + e.price * e.quantity;
+  });
+  return sum.toFixed(2);
+};
 export const Cart: FC<CartProps> = ({}) => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const cart = useSelector(state => state.cart);
+  const _incrementQuantity = (item: any) => {
+    dispatch(incrementQuantity(item));
+  };
+  const _decrementQuantity = (item: any) => {
+    dispatch(decrementQuantity(item));
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -35,24 +52,26 @@ export const Cart: FC<CartProps> = ({}) => {
               <View style={styles.botInfo}>
                 <Text style={styles.quantity}>Quantity</Text>
                 <View style={styles.base}>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => _decrementQuantity(item)}>
                     <Image source={images.minus} style={styles.minusImg} />
                   </TouchableOpacity>
-                  <Text style={styles.count}>2</Text>
-                  <TouchableOpacity>
+                  <Text style={styles.count}>{item.quantity}</Text>
+                  <TouchableOpacity onPress={() => _incrementQuantity(item)}>
                     <Image source={images.plus} style={styles.plusImg} />
                   </TouchableOpacity>
                 </View>
               </View>
 
-              <Text style={styles.total}>Total: $39.99</Text>
+              <Text style={styles.total}>
+                Total: ${item.quantity * item.price}
+              </Text>
             </View>
           </View>
         ))}
         {cart.items.length > 0 ? (
           <View style={styles.billing}>
             <Text style={styles.bill}>Billing:</Text>
-            <Text style={styles.totalBill}>$1000</Text>
+            <Text style={styles.totalBill}>${calculatorPrice(cart.items)}</Text>
           </View>
         ) : (
           <Text style={styles.emptyProduct}>No products in cart</Text>

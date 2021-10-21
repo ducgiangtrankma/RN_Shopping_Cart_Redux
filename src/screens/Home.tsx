@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {images} from '../assets';
-import {ADD_TO_CART} from '../redux/cartReducer';
+import {addToCart} from '../redux/cartReducer';
 import {useSelector} from '../redux/common';
 import {useNavigation} from '@react-navigation/native';
 import {APP_SCREEN} from '../navigation/ScreenTypes';
@@ -32,8 +32,8 @@ export const Home: FC<HomeProps> = ({}) => {
   const navigation = useNavigation();
   const [categoryIndex, setCategoryIndex] = React.useState<number>(0);
   const cart = useSelector(state => state.cart);
-  const addToCart = (item: Product) => {
-    dispatch(ADD_TO_CART(item));
+  const _addToCart = (item: Product) => {
+    dispatch(addToCart({...item, quantity: 1}));
   };
 
   const renderItem = ({item}: {item: Product}) => {
@@ -63,7 +63,7 @@ export const Home: FC<HomeProps> = ({}) => {
           <Text style={styles.productPrice}>${item.price}</Text>
           <TouchableOpacity
             style={styles.addProductButton}
-            onPress={() => addToCart(item)}>
+            onPress={() => _addToCart(item)}>
             <Text style={styles.addText}>+</Text>
           </TouchableOpacity>
         </View>
